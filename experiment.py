@@ -14,7 +14,7 @@ clfs = {
 
 dbnames = [
     'RBFGradualRecurring',
-    'covtypeNorm', 'poker-lsn',  # other real
+    'covtypeNorm', 'poker-lsn',
     'RandomTreeRecurringFaster',
     'RandomTreeRecurring', 'elecNormNew', 'SEASuddenFaster',
     'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
@@ -36,12 +36,13 @@ for budget in budgets:
         controllers.append(sl.controllers.BLALC(
             budget=budget, treshold=treshold))
 
-for dbname in tqdm(dbnames):
-    for controller in tqdm(controllers):
-        for clfname in tqdm(clfs):
+
+for dbname in dbnames:
+    for controller in controllers:
+        for clfname in clfs:
             clf = clfs[clfname]
             filename = 'results/%s_%s_%s.csv' % (clfname, dbname, controller)
-            # print filename
+            print filename
 
             f = open('datasets/%s.arff' % dbname, 'r')
             learner = sl.Learner(
