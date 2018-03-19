@@ -5,7 +5,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 clfs = {
-    "MLP": neural_network.MLPClassifier()
+    "MLP100": neural_network.MLPClassifier(hidden_layer_sizes=(100,)),
+    "MLP50": neural_network.MLPClassifier(hidden_layer_sizes=(50,)),
+    "MLP7": neural_network.MLPClassifier(hidden_layer_sizes=(7,))
 }
 
 dbnames = [
@@ -23,6 +25,7 @@ budgets = [.1, .3, .5, .7, .9]
 controllers = []
 
 controllers.append(sl.controllers.Bare())
+
 for budget in budgets:
     controllers.append(sl.controllers.Budget(budget=budget))
 
