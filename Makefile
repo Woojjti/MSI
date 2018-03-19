@@ -1,5 +1,5 @@
 wae:
-	python -W ignore experiment_wae.py
+	python experiment.py
 
 profiler:
 	python -m cProfile -o profiling_results test.py
