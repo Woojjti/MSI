@@ -1,6 +1,7 @@
 import strlearn as sl
 from sklearn import neural_network
 import warnings
+from tqdm import tqdm
 
 warnings.filterwarnings("ignore")
 
@@ -13,11 +14,11 @@ clfs = {
 
 dbnames = [
     'RBFGradualRecurring',
-    # 'covtypeNorm', 'poker-lsn',  # other real
-    # 'RandomTreeRecurringFaster',
-    # 'RandomTreeRecurring', 'elecNormNew', 'SEASuddenFaster',
-    # 'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
-    # 'RBFNoDrift', 'RBFBlips'
+    'covtypeNorm', 'poker-lsn',  # other real
+    'RandomTreeRecurringFaster',
+    'RandomTreeRecurring', 'elecNormNew', 'SEASuddenFaster',
+    'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
+    'RBFNoDrift', 'RBFBlips'
 ]
 
 tresholds = [.1, .3, .5, .7, .9]
@@ -35,12 +36,12 @@ for budget in budgets:
         controllers.append(sl.controllers.BLALC(
             budget=budget, treshold=treshold))
 
-for dbname in dbnames:
-    for controller in controllers:
-        for clfname in clfs:
+for dbname in tqdm(dbnames):
+    for controller in tqdm(controllers):
+        for clfname in tqdm(clfs):
             clf = clfs[clfname]
             filename = 'results/%s_%s_%s.csv' % (clfname, dbname, controller)
-            print filename
+            # print filename
 
             f = open('datasets/%s.arff' % dbname, 'r')
             learner = sl.Learner(
