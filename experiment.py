@@ -7,16 +7,17 @@ warnings.filterwarnings("ignore")
 clfs = {
     "MLP100": neural_network.MLPClassifier(hidden_layer_sizes=(100,)),
     "MLP50": neural_network.MLPClassifier(hidden_layer_sizes=(50,)),
+    "MLP101010": neural_network.MLPClassifier(hidden_layer_sizes=(10, 10, 10)),
     "MLP7": neural_network.MLPClassifier(hidden_layer_sizes=(7,))
 }
 
 dbnames = [
-    'covtypeNorm', 'poker-lsn',  # other real
     'RBFGradualRecurring',
-    'RandomTreeRecurringFaster',
-    'RandomTreeRecurring', 'elecNormNew', 'SEASuddenFaster',
-    'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
-    'RBFNoDrift', 'RBFBlips'
+    # 'covtypeNorm', 'poker-lsn',  # other real
+    # 'RandomTreeRecurringFaster',
+    # 'RandomTreeRecurring', 'elecNormNew', 'SEASuddenFaster',
+    # 'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
+    # 'RBFNoDrift', 'RBFBlips'
 ]
 
 tresholds = [.1, .3, .5, .7, .9]
