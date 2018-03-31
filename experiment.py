@@ -1,9 +1,8 @@
+import warnings
+warnings.filterwarnings("ignore")
 import strlearn as sl
 from sklearn import neural_network
-import warnings
 from tqdm import tqdm
-
-warnings.filterwarnings("ignore")
 
 clfs = {
     "MLP100": neural_network.MLPClassifier(hidden_layer_sizes=(100,)),
@@ -42,7 +41,7 @@ for dbname in dbnames:
         for clfname in clfs:
             clf = clfs[clfname]
             filename = 'results/%s_%s_%s.csv' % (clfname, dbname, controller)
-            print filename
+            print(filename)
 
             f = open('datasets/%s.arff' % dbname, 'r')
             learner = sl.Learner(
