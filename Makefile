@@ -1,8 +1,6 @@
-wae:
-	python experiment.py
-
 profiler:
 	python -m cProfile -o profiling_results test.py
+
 prepare:
 	pip install -r requirements.txt
 

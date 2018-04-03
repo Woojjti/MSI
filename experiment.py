@@ -16,7 +16,7 @@ dbnames = [
     'RandomTreeRecurringFaster',
     'RandomTreeRecurring', 'elecNormNew', 'SEASuddenFaster',
     'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
-    'RBFNoDrift', 'RBFBlips'
+    'RBFNoDrift', ' cRBFBlips'
 ]
 clfs = {
     "MLP100": neural_network.MLPClassifier(hidden_layer_sizes=(100,)),
