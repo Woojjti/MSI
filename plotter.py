@@ -25,7 +25,7 @@ for dbname in dbnames:
     fig, ax = plt.subplots(5,5, figsize=(12,8), sharex=True,
                            sharey=True)
     fig.subplots_adjust(hspace=0, wspace=0)
-    fig.suptitle("Learning curves for %s dataset" % dbname, fontsize=14)
+    fig.suptitle("Learning curves for %s dataset" % dbname, fontsize=20)
     for i, b in enumerate(budgets):
         ax[i,0].set_ylabel("b = %.1f" % b)
         budget = pd.read_csv("results/%s_%s_bc_b%.2f.csv" % (
