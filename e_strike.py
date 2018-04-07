@@ -25,12 +25,13 @@ evaluate_interval = length // points_on_plot
 
 clfs = {
     #"MLP5": neural_network.MLPClassifier(hidden_layer_sizes=(5,)),
-    "MLP20": neural_network.MLPClassifier(hidden_layer_sizes=(20,)),
-    "MLP60": neural_network.MLPClassifier(hidden_layer_sizes=(60,)),
-    "MLP100": neural_network.MLPClassifier(hidden_layer_sizes=(100,)),
-    "MLP500": neural_network.MLPClassifier(hidden_layer_sizes=(500,)),
-    "MLP1000": neural_network.MLPClassifier(hidden_layer_sizes=(1000,)),
-    "MLP10000": neural_network.MLPClassifier(hidden_layer_sizes=(10000,)),
+    #"MLP20": neural_network.MLPClassifier(hidden_layer_sizes=(20,)),
+    #"MLP50": neural_network.MLPClassifier(hidden_layer_sizes=(50,)),
+    #"MLP100": neural_network.MLPClassifier(hidden_layer_sizes=(100,)),
+    #"MLP500": neural_network.MLPClassifier(hidden_layer_sizes=(500,)),
+    #"MLP1000": neural_network.MLPClassifier(hidden_layer_sizes=(1000,)),
+    #"MLP10000": neural_network.MLPClassifier(hidden_layer_sizes=(10000,)),
+    "MLP100000": neural_network.MLPClassifier(hidden_layer_sizes=(100000,)),
     #"MLP500": neural_network.MLPClassifier(hidden_layer_sizes=(500,))
 }
 

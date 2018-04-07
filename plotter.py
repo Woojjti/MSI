@@ -21,6 +21,8 @@ for dbname in dbnames:
     x = bare[:,0]
     length = np.max(x)
     divider = length / 100
+    print(divider)
+
     y_bare = bare[:,1]
     fig, ax = plt.subplots(5,5, figsize=(12,8), sharex=True,
                            sharey=True)

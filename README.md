@@ -1,11 +1,12 @@
 # README
 
 - zdobycie niezbędnej wiedzy redukuje zapotrzebowanie na nowe próbki
-- nasycenie wiedzą można mierzyć tym czteroliterowym skrótem
+- nasycenie wiedzą można mierzyć przez RFSD
+- HyperplaneSlow, SEASudden - widać, że odpowiedni dobór potrafi nawet przyspieszyć uczenie
+- i to uzasadnia parametr budżetu, który pozornie wydawał się zbędny
+- dla elecNormNew mamy nadal klasyfikator, który zachowuje się jak losowy
+- zmniejszenie chunka działa pozytywnie przez zwiększenie częstotliwości uczenia (częstsze powtarzanie procesu uczenia)
 
-'RBFGradualRecurring', 'RBFNoDrift', 'RBFBlips', 'SEASuddenFaster',
-  'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
-  'elecNormNew', 'covtypeNorm', 'poker-lsn'
 
 ![](figures/RBFGradualRecurring.png)
 ![](figures/RBFNoDrift.png)
