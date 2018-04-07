@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from __future__ import absolute_import
 from sklearn import neural_network
 import strlearn as sl
@@ -10,19 +11,17 @@ warnings.simplefilter('ignore', DeprecationWarning)
 warnings.simplefilter('ignore', ImportWarning)
 
 # Set of parameters
+points_on_plot = 100
 dbnames = [
-    'RBFGradualRecurring',
-    'covtypeNorm', 'poker-lsn',
-    'RandomTreeRecurringFaster',
-    'RandomTreeRecurring', 'elecNormNew', 'SEASuddenFaster',
-    'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
-    'RBFNoDrift', ' cRBFBlips'
+    'RBFGradualRecurring', 'RBFNoDrift', 'RBFBlips',
+    # 'RandomTreeRecurringFaster', 'RandomTreeRecurring',
+    'SEASuddenFaster', 'SEASudden',
+    'LEDNoDrift', 'LED',
+    'HyperplaneFaster', 'HyperplaneSlow',
+    'elecNormNew', 'covtypeNorm', 'poker-lsn'
 ]
 clfs = {
-    "MLP100": neural_network.MLPClassifier(hidden_layer_sizes=(100,)),
-    "MLP50": neural_network.MLPClassifier(hidden_layer_sizes=(50,)),
-    "MLP101010": neural_network.MLPClassifier(hidden_layer_sizes=(10, 10, 10)),
-    "MLP7": neural_network.MLPClassifier(hidden_layer_sizes=(7,))
+    "MLP100": neural_network.MLPClassifier(hidden_layer_sizes=(100,))
 }
 tresholds = [.1, .3, .5, .7, .9]
 budgets = [.1, .3, .5, .7, .9]
@@ -45,15 +44,17 @@ for dbname in tqdm(dbnames, ascii=True, desc="DBS"):
         data = np.array(dataset['data'])
         X = data[:, :-1].astype(np.float)
         y = data[:, -1]
+        length = len(y)
+        evaluate_interval = length // points_on_plot
         for controller in tqdm(controllers, ascii=True, desc="CON"):
-            for clfname in tqdm(clfs,ascii=True, desc="CLF"):
+            for clfname in clfs:
                 clf = clfs[clfname]
                 filename = 'results/%s_%s_%s.csv' % (clfname, dbname, controller)
                 if os.path.isfile(filename):
                     pass
                 else:
                     learner = sl.Learner(X, y, clf,
-                                         evaluate_interval=1000, chunk_size=500,
+                                         evaluate_interval=evaluate_interval, chunk_size=500,
                                          controller=controller)
                     learner.run()
                     learner.serialize(filename)
