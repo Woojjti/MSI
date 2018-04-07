@@ -1,5 +1,12 @@
 # README
 
+- zdobycie niezbędnej wiedzy redukuje zapotrzebowanie na nowe próbki
+- nasycenie wiedzą można mierzyć tym czteroliterowym skrótem
+
+'RBFGradualRecurring', 'RBFNoDrift', 'RBFBlips', 'SEASuddenFaster',
+  'SEASudden', 'LEDNoDrift', 'LED', 'HyperplaneFaster', 'HyperplaneSlow',
+  'elecNormNew', 'covtypeNorm', 'poker-lsn'
+
 ![](figures/RBFGradualRecurring.png)
 ![](figures/RBFNoDrift.png)
 ![](figures/RBFBlips.png)
