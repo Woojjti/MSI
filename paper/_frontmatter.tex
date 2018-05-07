@@ -1,0 +1,44 @@
+\begin{frontmatter}
+
+\title{Data Stream Classification using Active Learned Neural Networks}
+
+\author[pwr]{Pawe\l{} Ksieniewicz\corref{cor1}}
+\ead{pawel.ksieniewicz@pwr.edu.pl}
+
+\author[pwr]{Micha\l{} Wo\'zniak}
+\ead{michal.wozniak@pwr.edu.pl}
+
+\author[bc]{Bogus\l{}aw Cyganek}
+\ead{cyganek@agh.edu.pl}
+
+\author[pwr]{Andrzej Kasprzak}
+\ead{andrzej.kasprzak@pwr.edu.pl}
+
+\author[pwr]{Krzysztof Walkowiak}
+\ead{krzysztof.walkowiak@pwr.edu.pl}
+
+\address[pwr]{Department of Systems and Computer Networks, Wroc\l{}aw University of Science and Technology, Wyb. Wyspia{\'n}skiego 27, 50-370 Wroc\l{}aw, Poland}
+\address[bc]{AGH University of Science and Technology
+Al. Mickiewicza 30, 30-059 Krak\'ow, Poland}
+
+\cortext[cor1]{Corresponding author}
+
+\begin{abstract}
+%% Text of abstract
+Due to variety of modern real-life tasks, where analyzed data is often not a static set, the data stream mining gained a substantial focus of machine learning community. Main property of such systems is the large amount of data arriving in a sequential manner, which creates an endless stream of objects. %The observer has no influence on order and time of their arrival. 
+Taking into consideration the limited resources as memory and computational power, it is widely accepted that each instance can be processed up once and it is not remembered, making reevaluation impossible.
+In the following work, we will focus on the data stream classification task where parameters of a classification model may vary over time, so the model should be able to adapt to the changes. It requires a forgetting mechanism, ensuring that outdated samples will not impact a model. The most popular approaches base on so-called \emph{windowing}, requiring storage of a batch of objects and when new examples arrive, the least relevant ones are forgotten. Objects in a new window are used to retrain the model, which is cumbersome especially for \emph{online} learners and contradicts the principle of processing each object at most once. Therefore, this work employs inbuilt forgetting mechanism of neural networks. Additionally, to reduce a need of expensive (sometimes even impossible) object labeling, we are focusing on \emph{active learning}, which asks for labels only for \emph{interesting} examples, crucial for appropriate model upgrading. Characteristics of proposed methods were evaluated on the basis of the computer experiments, performed over diverse pool of data streams. Their results confirmed the convenience of proposed strategy.
+\end{abstract}
+
+\begin{keyword}
+pattern classification \sep data stream  \sep active learning \sep concept drift \sep forgetting
+%% keywords here, in the form: keyword \sep keyword
+
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+
+\end{keyword}
+
+\end{frontmatter}
+
+%\linenumbers

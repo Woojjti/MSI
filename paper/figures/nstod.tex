@@ -1,0 +1,161 @@
+\begin{figure}[!ht]
+	\begin{center}
+
+\pgfplotsset{width=5.2cm,height=2cm,compat=1.3}
+\begin{tikzpicture}
+\pgfplotsset{
+    scale only axis,
+}
+
+% First
+\begin{axis}[
+	name = plot1,
+	ymajorgrids,
+	yminorgrids,
+    xtick=\empty,
+	align = center,
+	title = {sudden drift},
+	axis y line*=left,
+	ymin=.45, ymax=1,
+	legend columns=-1,
+	legend style={
+		at={(.5,1.1)},
+		anchor=south
+	},
+	smooth,
+	font=\scriptsize,
+	scaled x ticks=false,
+	yminorticks=false,
+	ytick={},
+	axis x line=bottom,axis y line=left,
+	%grid=both,
+    grid style={line width=.1pt, draw=gray!10},
+    major grid style={line width=.2pt,draw=gray!50},
+    minor tick num=5,
+]
+	\addplot[color=expred, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_0_MLP10.csv};
+	\addplot[color=expgreen, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_0_MLP50.csv};
+	\addplot[color=expblue, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_0_MLP500.csv};
+	%\legend{chunk of 10 patterns, chunk of 100 patterns, chunk of 1000 patterns}
+\end{axis}
+
+
+% Second
+\begin{axis}[
+    name=plot2,
+    at=(plot1.right of south east), anchor=left of south west,
+	align = center,
+    xtick=\empty,
+	ymajorgrids,
+	yminorgrids,
+	title = {incremental drift (33\%)},
+	axis y line*=left,
+	ymin=.45, ymax=1,
+	legend columns=-1,
+	legend style={
+		at={(.5,1.4)},
+		anchor=south
+	},
+	legend style={draw=none},
+	smooth,
+	font=\scriptsize,
+	scaled x ticks=false,
+	yminorticks=false,
+	axis x line=bottom,axis y line=left,
+	%grid=both,
+    grid style={line width=.1pt, draw=gray!10},
+    major grid style={line width=.2pt,draw=gray!50},
+    minor tick num=5,
+]
+	\addplot[color=expred, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_11111_MLP10.csv};
+	\addplot[color=expgreen, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_11111_MLP50.csv};
+	\addplot[color=expblue, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_11111_MLP500.csv};
+	\legend{10 neurons, 50 neurons, 500 neurons}
+\end{axis}
+
+
+% Fourth
+\begin{axis}[
+	name = plot4,
+	ymajorgrids,
+	yminorgrids,
+    xtick=\empty,
+	at=(plot2.below south west),
+	anchor=above north west,
+	align = center,
+	title = {fully incremental drift},
+	axis y line*=left,
+	ymin=.45, ymax=1,
+	legend columns=-1,
+	legend style={
+		at={(.5,1.1)},
+		anchor=south
+	},
+	smooth,
+	font=\scriptsize,
+	scaled x ticks=false,
+	yminorticks=false,
+	axis x line=bottom,axis y line=left,
+	%grid=both,
+    grid style={line width=.1pt, draw=gray!10},
+    major grid style={line width=.2pt,draw=gray!50},
+    minor tick num=5,
+]
+	\addplot[color=expred, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_33333_MLP10.csv};
+	\addplot[color=expgreen, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_33333_MLP50.csv};
+	\addplot[color=expblue, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_33333_MLP500.csv};
+	%\legend{chunk of 10 patterns, chunk of 100 patterns, chunk of 1000 patterns}
+\end{axis}
+
+
+% Third
+\begin{axis}[
+    name=plot3,
+	ymajorgrids,
+    xtick=\empty,
+	yminorgrids,
+    at=(plot4.left of south west), 
+    anchor=right of south east,
+	align = center,
+	title = {incremental drift (66\%)},
+	axis y line*=left,
+	ymin=.45, ymax=1,
+	legend columns=-1,
+	legend style={
+		at={(.5,1.1)},
+		anchor=south
+	},
+	smooth,
+	font=\scriptsize,
+	scaled x ticks=false,
+	yminorticks=false,
+	axis x line=bottom,axis y line=left,
+	%grid=both,
+    grid style={line width=.1pt, draw=gray!10},
+    major grid style={line width=.2pt,draw=gray!50},
+    minor tick num=5,
+]
+	\addplot[color=expred, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_22222_MLP10.csv};
+	\addplot[color=expgreen, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_22222_MLP50.csv};
+	\addplot[color=expblue, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/nstod_w_22222_MLP500.csv};
+	%\legend{chunk of 10 patterns, chunk of 100 patterns, chunk of 1000 patterns}
+\end{axis}
+
+\end{tikzpicture}
+		
+		\caption{Reaction of different artificial neural network structures to different types of drift.}	
+		\label{fig:nstod}
+	\end{center}
+\end{figure}

@@ -1,0 +1,90 @@
+\noindent Firstly, let us formalize the classification model. Usually, a classifier $\Psi$ makes a decision using so-called support functions which return support for each class \cite{Duda:2001}
+
+\begin{equation}
+\mathcal{F}=\{F_1, F_2, ..., F_M\}
+\end{equation}
+
+\noindent To make a decision, $\Psi$ usually uses the maximum rule
+
+\begin{equation}
+\Psi(x)=\mathop{\max}\limits_{k \in \mathcal{M}}\left(F_k(x)\right),
+\end{equation}
+
+\noindent where $x$ is the feature vector, $k$ stands for the label from finite set of possible classes $\mathcal{M}=\{1, 2,..., M\}$. 
+
+We assume that if a decision about an object is supported by the high value of the support, then the label is not so \emph{"interesting"}, because it probably will not have a significant impact on the classification model improvement. If support functions have probabilistic interpretation, e.g., they are \emph{posterior} probabilities (in the case of so-called \oldstylenums0-\oldstylenums1 loss function) \cite{Duda:2001}, then high value of the support function associated with a chosen class means that the probability of misclassification is very low. Otherwise, if the difference among the support function values is low, i.e., the decision is very uncertain. 
+
+Let us propose \textsc{rsfd} (\emph{Relative Support Function Difference}) function, which measures average difference among the highest support and support for the rest of the classes for a given observation $x$   
+
+\begin{equation}
+\label{eq:rfsd}
+RSFD(x)=\frac{\mathop{\sum}\limits_{i=1}^M\left[\mathop{\max}\limits_{k \in \mathcal{M}}(F_k(x))-F_i(x)\right]}{M-1}
+\end{equation}
+
+\noindent The graphical interpretation of \textsc{rsfd} is presented in Fig. \ref{fig:gestosc}.
+
+\begin{figure}[!ht]
+	\centering
+	\begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.2in]{figures/2_classes}
+        \caption{binary problem}
+    \end{subfigure}%
+    ~ 
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[height=1.2in]{figures/3_classes}
+        \caption{multiclass problem}
+    \end{subfigure}
+    
+	\caption{An example of the supports for each of classes (left) and \textsc{rsfd} (\emph{Relative Support Function Difference}) (right) for 2 and 3 class problems.}
+	\label{fig:gestosc}
+\end{figure}
+
+This approach is similar to the \emph{classification with reject option} \cite{Chow:1970,Fumera:2000}, where the trade-off between the error and rejection rate is considered. Basically, in this approach, the decision is made only in a case if the maximum support is high enough (or difference between maximum support and supports for the rest of classes is significant), otherwise the classifier rejects the decision, instead of a giving label, answering \emph{"I do not know"}.   
+
+The proposed framework works as the block classifier \cite{Krawczyk:2017}, because it collects the data in the form of chunk, but for each chunk the \emph{online} learner is used. To avoid the influence of object order on a decision about labeling, samples in each chunk are randomized before processing.  
+
+The decision about the object labeling depends on two parameters:
+
+\begin{itemize}
+\item \emph{threshold} -- responsible for choosing the \emph{"interesting"} examples, i.e., if relative support function difference is lower than a given threshold the object seems to be interesting and the learning algorithm is asking for its label.
+\item \emph{given\_budget} -- the label will be assigned only in the case if its budget related to a given chunk allows to pay for it. For each chunk only limited percentage of the objects could be labeled.
+\end{itemize}
+
+The idea of the algorithm is presented in Alg. \ref{alcds}.
+
+\begin{algorithm}
+\caption{Active learning classifier for data stream}
+\label{alcds}
+\begin{algorithmic}[1]
+\REQUIRE  input data stream, \\$n$ - data chunk size, \\$M$ - number of classes, \\$incremental\_training\_ procedure()$ - classifier training procedure, \\
+$label()$ - function which returns label of a given example, \\$classifier()$ - classification model, \\$F_1(),F_2(),...,F_M()$ - support functions using by $classifier()$, \\$m$ - number of examples required to initialize $classifier()$, \\$given\_budget$ - max. percent of labeled example in a chunk, \\$treshold$
+
+\STATE $i \leftarrow 0$
+
+\FOR{$j= 0$ \TO $m$} 
+\STATE ask for the label of the $j$th example $x_j$
+\STATE $classifier \leftarrow  incremental\_training\_ procedure(x_j, label(x_j))$
+\ENDFOR
+
+\REPEAT
+\STATE $budget \leftarrow floor(n*given\_budget)$
+\STATE collect new data chunk $DS_i=\{x_i^1,x_i^2,...,x_i^n \}$
+	\STATE set random order of collected examples in $DS_i$
+	\FOR{$j= 0$ \TO $n$}
+%	\STATE $support \leftarrow \mathop{max}\limits_{k\in\{1,...,M\}}(F_k(x_i^j))$ 
+	\IF {$RFSD(x)<treshold$} 
+		\IF{$budget>0$}
+			\STATE ask for the label of the $j$th example $x_j$
+			\STATE $classifier() \leftarrow incremental\_training\_procedure(x_j, label(x_j))$
+			\STATE $budget \leftarrow budget-1$
+		\ENDIF
+	\ENDIF
+	\ENDFOR
+    \STATE $i \leftarrow i+1$
+\UNTIL{end of the input data stream}
+\end{algorithmic}
+\end{algorithm}
+
+

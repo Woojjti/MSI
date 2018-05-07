@@ -1,0 +1,46 @@
+\begin{figure}[!ht]
+	\begin{center}
+
+\pgfplotsset{width=10cm,height=2.5cm,compat=1.3}
+\begin{tikzpicture}
+\pgfplotsset{
+    scale only axis,
+}
+\begin{axis}[
+	align = center,
+	ymajorgrids,
+    xtick=\empty,
+	yminorgrids,
+	%title = {Title},
+	axis y line*=left,
+	ymin=.4, ymax=1,
+	legend columns=-1,
+	legend style={
+		at={(.5,1.1)},
+		anchor=south,
+		draw=none
+	},
+	smooth,
+	font=\scriptsize,
+	scaled x ticks=false,
+	yminorticks=false,
+	axis x line=bottom,axis y line=left,
+	%grid=both,
+    grid style={line width=.1pt, draw=gray!10},
+    major grid style={line width=.2pt,draw=gray!50},
+    minor tick num=5,
+]
+	\addplot[color=expred, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/csi_chunk_10.csv};
+	\addplot[color=expgreen, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/csi_chunk_100.csv};
+	\addplot[color=expblue, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/csi_chunk_1000.csv};
+	\legend{chunk of 10 patterns, chunk of 100 patterns, chunk of 1000 patterns}
+\end{axis}
+\end{tikzpicture}
+		
+		\caption{Influence of chunk size on a learning curve.}	
+		\label{fig:csi}
+	\end{center}
+\end{figure}

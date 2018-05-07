@@ -1,0 +1,23 @@
+%\noindent As a main experiment, we decided to compare our proposition of active learning model to teaching a classifier with fully labeled data stream. Although it is necessary to analyze beforehand what are the properties exhibited by artificial neural networks employed to classify data streams.
+\noindent Because we would like to employ inbuilt forgetting mechanism of artificial neural networks, therefore let us shortly present their main properties when they are used as the data stream classifiers. For each simulations presented in sections 3 and 4, the Multilayer Perceptron (\textsc{mlp}) has been used with one hidden layer. In this section the chosen results of the simulation research are presented, but the additional results, as well as the used software may be found in article repository\footnote{\url{https://github.com/w4k2/active_learning}}. All the examples presented below have been prepared with data streams generated using \emph{Radial Basis Function} for different concept drift types.
+
+% PAWEŁ proszę napisz dla jakiego strumienia są prezetowane wyniki.
+% ODP. Dodałem powyżej.
+
+Figure \ref{fig:csi} shows learning curves of three identical neural networks (\textsc{mlp} with \oldstylenums{100} neurons in a hidden layer) classifying a stream (\oldstylenums{10}k instances with two sudden drifts) using different size of data chunk.
+
+\input{figures/csi}
+
+As we can observe, a smaller chunk (red line) means a more dynamic learning curve (faster accuracy growth). This is most likely due to the increased frequency of repeating the learning procedure, even with smaller portions of information, leading faster to establishment of a generalization power. Simultaneously, a larger chunk (blue line) leads to a larger decrease of accuracy caused by a sudden drift. At the other side, the smaller chunk, with extreme of incremental learning when we run a learning procedure over every single object, also leads to a higher computational complexity.
+
+Figure \ref{fig:nstod} shows the reaction of different neural networks (\oldstylenums{10}, \oldstylenums{50} and \oldstylenums{500} neurons) to different types of concept drift (from sudden drift to stages of incremental drift).
+
+\input{figures/nstod}
+
+As we can see, in case of a sudden drift, a size of \textsc{mlp} hidden layer influences a learning curve in a similar way as a size of data chunk, but here the fewer number of artificial neurons decreases the learning abilities. On the other hand, more smooth drifts cause a lower drop of accuracy for, which means that in a fully incremental drift, for a structure of \oldstylenums{50} and \oldstylenums{500} neurons, we no longer observe a negative reaction to the occurrence of a drift. Natural mechanism of neural network forgetting allows (for a sufficiently large structure) to adapt smoothly to the changing concept.
+
+In both previous examples, we observe that the change in learning parameters (chunk size) or network  size (the number of neurons in the hidden layer) slows the rate of learning. In each case, the learning curves tend to go up in different dynamics. Figure \ref{fig:strike} presents that thanks to a sufficiently large data stream, various network structures achieve maximum discriminatory power and then encounter an sudden drift.
+
+\input{figures/strike}
+
+As expected, the return to a full accuracy (restoration time) of classification takes more time for smaller structures. Interesting, however, is the difference in the accuracy achieved in the first moments after the concept drift. Enlarging the structure leads to a greater decrease from the maximum accuracy when the drift occurs. It can therefore be concluded that the more complex structures, despite the greater ability to rebuild knowledge, are also more severely affected by the effects of sudden drifts. That is why for a practical task, it is necessary to find such a structure of \textsc{mlp} which will be a kind of trade-off between the restoration time and the classification accuracy drop after a sudden concept drift appearance. 

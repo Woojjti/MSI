@@ -1,0 +1,217 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{graphicx}
+
+\begin{document}
+\title{Answer to reviews' comments - Neurocomputing: Radial-Based Oversampling for Noisy Imbalanced Data Classification }
+\begin{center}
+\textbf{Response to the Reviewers’ Comments}
+\end{center}
+
+
+\noindent Manuscript id \textbf{NEUCOM-D-17-03532}
+ 
+\noindent Authors: \textbf{Micha{\l} Koziarski, Bartosz Krawczyk, Micha{\l} Wo{\'z}niak}
+
+\noindent Title: \textbf{Radial-Based Oversampling for Noisy Imbalanced Data Classification} \\
+
+Dear Editor and Reviewers,\\
+
+We would like to thank you for all your corrections and suggestions. The paper has been carefully revised, following your recommendations.\\
+
+
+Sincerely,\\
+
+Micha{\l} Koziarski, Bartosz Krawczyk, Micha{\l} Wo{\'z}niak
+
+
+\newpage
+
+\color{red}{REVIEWER 1\\
+Summary:
+
+This paper addresses the well-known problem of class imbalance by proposing a new synthetic oversampling algorithm, namely radial-based oversampling. In addition to imbalanced class priors, this work aims to address issues related to  noisy training data, and disjoint subconcepts. These can negatively impact existing synthetic oversampling methods.
+
+The unique aspect of this paper is that it utilizes both the majority and minority class training instances to inform where synthetic samples should be generated. This helps the algorithm avoid synthesizing instances in regions of the data space that, with high probability, belong one the majority class. This is a known issue with SMOTE. The strategy uses the difference in the RBF over the majority class and the minority class to assess the potential of placing a synthetic point in the region around the minority class instances. The results show that the algorithm is relatively robust to parameter selection, and on both the clean and noisy datasets the algorithm offers some benefits. However, the benefit is heavily dependent on the metric and the classification algorithm applied. This is not surprising, because, as the authors allude to, the bias of the generation process may be more appropriate for some classification biases than others. In these experiments, RBO is most
+helpful for NB.
+
+Contribution:
+
+- A new form of radial-based synthetic oversampling that employs an informed process based on the data distribution to decide which regions of the dataspace should be modified
+
+- The strategy makes it more resilient to the presence of outliers and disjoint subconcepts in the minority class
+
+- The potential function allows the user to control the extent to which the synthetic instances expand into regions with low likelihoods.
+
+- Highlights the impact of noise on that performance of synthetic oversampling
+
+
+General impressions:
+
+The authors have added to the important discussion about how best to generate synthetic samples for imbalanced classification problems. Whilst the method is generally applicable, they have demonstrated that it is also suited for training data with some noise. The nice benefit of the proposed algorithm is that it aims to manage the noise during the generation process, rather than during a post-processing phase. This is relatively rare in the existing SMOTE-based methods, as side from ADASYNTH. I like the work and feel that the authors have made a good contribution to the literature. The algorithm is intuitive and is presented in a way that makes it easy to understand the implications of the generative process. Since the authors focused on the performance ranking broken down by classifier, however, I was left with some uncertainty about if and when RBO produced the best overall results.
+}
+
+\color{blue}{
+
+We would like to express our thanks for your valuable opinion.}
+
+\color{red}
+{
+Specific comments
+
+1. As suggested above, my main comment is in regards to the aggregation of the results based on rank. Whilst this gives a read a general impression of the benefit of the proposed algorithm on a classifier-by-classifier basis, a typical user will be most interested in which method performs the best. Specifically, for a given dataset and metric, which classifier + oversampling combination worked the best. I see that the authors have these results available online, however, the paper would benefit from a discussion of these results.}
+
+\color{blue}{
+
+We decided to present the results on a per-classifier basis because the choice of the classifier is highly dataset-specific. On the other hand, the choice of the oversampling strategy has to be based on the chosen classifier: as we have proven in this paper, different oversampling strategies perform best with different classification algorithms. If we would focus on the overall best-performing combination it would be not clear to what extent good performance is caused by the choice of the classifier, and to what by the choice of the oversampling algorithm, and such discussion could be misleading. In this paper, our goal is to compare various oversampling strategies, not finding the classification algorithm best suited for the chosen benchmarks. We believe, that including the discussion on overall performance would make the description of the results more confusing by focusing on the results less relevant to the mentioned goal. Having said that, as you mention, we presented the complete results online, specifically to accommodate the possibility of further analysis by the reader.}\\
+
+
+\color{red}{2. Also related to the results, I find the discussion of the relative performances in Experiment 2 to be unclear. It took me some effort to align what I was reading in the second paragraph with what I was seeing in Table 2.}
+
+
+\color{blue}{
+
+Expanding on the answer to the previous question, presentations of the results in Experiment 2 might seem unclear at first due to the number of considered classifiers and performance metrics, but we think it is unavoidable considering the volume of the results. We would love to address and incorporate any specific suggestions, but at this point we do not think any significant improvement are possible: given the presented results and keeping in mind the main goal of comparing oversampling strategies on per-classifier basis, we simply discuss how RBO compares to the reference methods.}\\
+
+\color{red}
+{3. By current standards, the datasets used in these experiments are all relatively low dimensional, and the proposed algorithm may be susceptible to the curse-of-dimensionality. Given the frequency of high-dimensional datasets, it would be good to discuss this relative to SMOTE, which is also susceptible to high-dimensionality, and other methods. Did the authors notice any performance trends in the results with respect to dimensionality?}
+
+\color{blue}{
+
+To assess the performance of RBO based on the number of features we performed an experimental analysis on a synthetic dataset (with the generator from scikit-learn combined with a random undersampling). We present the results of this analysis for k-NN classifier and AUC in Figure~\ref{fig:n_features}. As it can be seen, in this case relative performance of RBO improves as the number of features improves. For the remaining classifiers (CART, SVM, NB) performance of all the methods was similar: in no case RBO achieved a visibly worse performance for a higher number of features. We did not observe any significant trends on the datasets used in the paper regarding the performance in a high dimensional setting, either. Based on that, and considering the computational overhead that would be required to evaluate a significant amount of high-dimension datasets, we decided to limit ourselves to lower dimensional data.
+
+It should be noted that while we include the results of evaluation on the synthetic data here to somehow motivate our reasoning, we believe that results on synthetic data are too easily manipulable, and the paper would not benefit from including them in it.}\\
+
+\begin{figure}
+\centering
+\includegraphics[width=0.6\linewidth]{img/synthetic_n_features_KNN_AUC.pdf}
+\caption{Impact of the number of features on AUC for a synthetic imbalanced dataset (IR = 10, n majority instances = 1000), k-NN used as a classifier.}
+\label{fig:n_features}
+\end{figure}
+
+\color{red}
+{4. In regards to noisy features, we might expect that some feature are more affected by noise than others. For example, in a dataset composed of information from multiple sensor, we might find that some sensors are very accurate and others less so. Might setting such as this have a different effect on performance? Related to this, have you thought about non-stationary noise?}
+
+\color{blue}{
+
+Modeling a noise with an intensity varying between the features is an interesting notion, but we find it difficult to design an actual experiment around it. As can be seen, the amount of data we present already is rather significant. To accommodate another type of noise (especially of the type you describe), at the same time keeping the amount of results we present at an acceptably readable level, would likely require us to limit the experiments in another way, perhaps by limiting the number of examined classifiers. We considered introducing a non-stationary noise, but decided to refrain from it due to the same reasons. Still, we agree that evaluating more noise models could be beneficial in finding additional use cases for the proposed algorithm.}\\
+
+\color{red}
+{5. Based on your results, can you discuss how your algorithm compare to others in cases of extreme imbalance. I am think about a high-dimensional dataset with fewer than 10 minority instances in the training set.}
+
+\color{blue}{
+
+The answer to that question parallels the one given to question number 2. We performed an analysis on a synthetic dataset (with results presented in Figure~\ref{fig:ir}). Once again, based on the results on both real and synthetic datasets, we did not see a significant change in the RBO's performance depending on the imbalance ratio, so we did not further pursue this direction.}\\
+
+\begin{figure}
+\centering
+\includegraphics[width=0.6\linewidth]{img/synthetic_imbalance_ratio_KNN_AUC.pdf}
+\caption{Impact of the imbalance ratio on AUC for a synthetic imbalanced dataset (n features = 10, n majority instances = 1000), k-NN used as a classifier.}
+\label{fig:ir}
+\end{figure}
+
+\color{red}
+{6. Have you considered your algorithm for multi-class or multi-label problems?}
+
+\color{blue}{
+
+We are at the moment working on transferring RBO to a multi-class setting. Since the approach we work on differs considerably from standard RBO, we believe it is outside the scope of this article. We have not considered using RBO in the multi-label problem yet, but it is an interesting suggestion that we will likely address in the future - thank you for it.}\\
+
+\color{red}
+{7. Make the grey in figure 2 more apparent. Perhaps a black outline.}
+
+\color{blue}{
+
+The figures were adjusted, in particular Figure 2 was modified according to your suggestion.}\\
+
+
+\color{red}
+{8. It would be interesting to show there result of ADASYNTH in Figure 3 as it would presumably deal with some of the overlap.}
+
+\color{blue}{
+
+Visualization of the oversampling for the ADASYN, as well as the Borderline SMOTE, were added to the revised version of the paper.
+%We present a visualization of the oversampling procedure for the ADASYN in Figure~\ref{fig:oversampled}. As can be seen, it is very similar to SMOTE, and both differ from RBO. Since ADASYN focuses on the difficult examples, it is actually more likely to be affected by the outliers and noisy examples than SMOTE.
+}\\
+
+%\begin{figure}
+%\centering
+%\includegraphics[width=0.3\linewidth]{img/behavior_noisy_smote.pdf}
+%\includegraphics[width=0.3\linewidth]{img/behavior_noisy_adasyn.pdf}
+%\includegraphics[width=0.3\linewidth]{img/behavior_noisy_rbo.pdf}
+%\caption{An example of a noisy dataset oversampled with SMOTE (left), ADASYN (middle) and RBO (right).}
+%\label{fig:oversampled}
+%\end{figure}
+
+
+\color{red}
+{9. With respect to complex data distributions, can the authors say that the benefit that they demonstrated in Figure 3 results in better performance in their experiments?}
+
+\color{blue}{In Figure 3 we have presented an extreme case to show when SMOTE and related neighborhood-based approaches tend to fail. In real-life dataset there will be problems that do not suffer from such difficulties. But for any real-life problem that has even locally difficult data distributions, RBO will perform better by reducing the risk of overlapping, data shift and by focusing on oversampling the most difficult instances. Therefore, this mechanism will be beneficial to any imbalanced datasets with instance-level difficulties, as well as improve the robustness of RBO to noisy problems. Therefore, our mechanism for introducing artificial instances is the main reason behind favorable results returned by RBO.}\\
+
+
+\color{red}
+{10. The authors mention the complexity of SMOTE-IPF. Can they speak more directly about the time complexity of the proposed algorithm, and any limitations, if there are any, associated with this?}
+
+\color{blue}{While we do not have access to direct estimation of SMOTE-IPF complexity, we may argue that it is a much more complex and time-consuming algorithm than our proposed RBO. SMOTE-IPF uses an ensemble-based filtering of noisy instances, which is known to be computationally costly. Therefore, SMOTE-IPF conducts not only neighborhood-based search for introducing artificial instances, but build an ensemble of classifiers in the preprocessing step that are used for instance re-labeling and then discarded. Therefore SMOTE-IPF is effectively a combination of two separate data preprocessing techniques, thus leading to high computational complexity. In RBO the filtering of noisy instances is a natural effect of potential estimation and thus no additional preprocessing technique is needed, making RBO simpler and less complex solution to noisy and imbalanced data problem.}\\
+
+\color{red}
+{11. In the case of a single outlier, the authors note that instances are generated very close to it. In this case, would it not be better to ignore the outlier in order to avoid the risk of the classifier overfilling it?}
+
+\color{blue}{
+
+Quoting the revised version of the paper: "It can be argued that in case of a singular outliers, instead of limiting the distance within which the synthetic objects can be generated, the outliers could be ignored completely and regarded as a noise. However, especially in the case of extreme imbalance, such behavior could lead to omitting important instances. Therefore, instead of making an assumption about the nature of the outliers on the level of the oversampling algorithm, if necessary we propose using data cleaning prior to oversampling."}\\
+
+\color{red}
+{12. In the while-loop of your algorithm, did you consider adding the accepted synthetic instances to the pool from which you sampling the next point? This might promote slightly more spread whilst still allowing the algorithm to prevent synthetic instances from being generated in the majority space.}
+
+\color{blue}{
+
+Yes, actually that was the initial version of the algorithm we tested. However, quoting from the revised version of the paper: "Importantly, during the oversampling, in the proposed version of the algorithm the newly generated, synthetic minority instances are not being considered during the potential calculation. We observed that synthetic instances could cause a significant drift in the original potential and deemed this behavior potentially dangerous, especially in the case of an extreme imbalance."}\\
+
+\color{red}
+{13. Have the authors given any thought to using the potential function to also 'clean' some noisy or borderline instances from the majority class? Granted this would add to the time complexity of the algorithm, but in cases where noisy training data is a concern, it could be helpful.}
+
+\color{blue}{
+
+It is an interesting notion that we did not previously consider, so thank you for that suggestion. Indeed, class potential could be, in principle, used for data cleaning, perhaps even without the associated oversampling. It seems like an interesting direction for further research that we will try to explore.}\\
+
+
+\color{red}
+{14. The authors should discuss the following papers in the related work, and distinguish their contribution from these:
+
+Gao, M., Hong, X., Chen, S., \& Harris, C. J. (2012). Probability density function estimation based over-sampling for imbalanced two-class problems. In The 2012 International Joint Conference on Neural Networks (IJCNN) (pp. 1-8). Ieee. https://doi.org/10.1109/IJCNN.2012.6252384
+
+Fecker, D., Märgner, V., \& Fingscheidt, T. (2013). Density-induced oversampling for highly imbalanced datasets. In P. R. Bingham \& E. Y. Lam (Eds.), SPIE. 8661, Image Processing:      Machine Vision Applications VI 86610P (Vol. 8661, p. 86610P-86610P-11). https://doi.org/10.1117/12.2003973
+
+Tang, Bo, and Haibo He. "KernelADASYN: Kernel based adaptive synthetic data generation for imbalanced learning." Evolutionary Computation (CEC), 2015 IEEE Congress on. IEEE, 2015.
+}
+
+\color{blue}{
+We are thankful for these suggestions and added them to our list of references. We have discussed them in details in Section 3.1, pointing to both their advantages, as well as shortcomings that are addressed by our proposed RBO methodology. This will help to emphasize our reasonings behind designing our RBO method and how it advances the current oversampling approaches.}\\
+
+
+
+\color{red}{REVIEWER 2\\
+In this paper authors propose an oversampling technique for solving imbalanced classification problems with a RBF embedding. The idea of oversampling data in the feature space it is interesting and it can definitely overcome some shortcoming of the original SMOTE idea. This idea has been recently explored by other authors as well. For example in the paper
+http://ieeexplore.ieee.org/document/7222438/?reload=true
+
+a similar idea is proposed. For this I would like authors to expand their literature review to include relevant works. And when i say previous works I mean that the authors need to thoroughly update their lit review not just include the above paper. Then i would like to see a description of their contribution (i.e. what do they do different compared to the previous papers). Unless this happens it is not possible to judge the quality of the contribution to the body of knowledge
+
+}
+
+\color{blue}{
+
+We would like to thank you for your remarks. We have discussed the suggested work and other kernel-based and density-based oversampling techniques in details in Section 3.1, pointing to both their advantages, as well as shortcomings that are addressed by our proposed RBO methodology. This will help to emphasize our reasonings behind designing our RBO method and how it advances the current oversampling approaches.}\\
+
+\color{red}{
+Another issue is related to the choice of the RBF function. there are some kernels that behave better for some class of classification problems. Wouldnt it be better to oversample in the feature space produced by that kernel then?}
+
+\color{blue}{
+
+While tuning the kernel function to each dataset individually may lead to some small improvements, it is also time-consuming and may lead to improper parameter setting for less experienced users. Our RBO framework performs well for a wide number of benchmarks without a need for such a tuning, making it an easy to use and general-purpose tool for handling standard and difficult imbalanced data. In our future works, we are considering evaluating usage of different metrics for placing artificial instances, but in this particular contribution we wanted to show a ready to use algorithm that can be applied to as wide number of datasets with good results as possible without a tedious parameter selection.
+
+}
+
+\end{document}

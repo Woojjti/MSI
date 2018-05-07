@@ -1,0 +1,278 @@
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{%
+  array,
+  booktabs,
+  dcolumn,
+  rotating,
+  shortvrb,
+  tabularx,
+  units,
+  url,
+  subcaption
+}
+
+% Table padding
+\def\arraystretch{1.4}
+
+
+\newcommand{\armultirow}[3]{%
+  \multicolumn{#1}{#2}{%
+    \begin{picture}(0,0)%
+      \put(0,0){%
+        \begin{tabular}[t]{@{}#2@{}}%
+          #3%
+        \end{tabular}%
+      }%
+    \end{picture}%
+  }%
+}%
+%
+% array.sty
+\newcolumntype{f}{>{$}l<{$}}
+\newcolumntype{n}{l}
+\newcolumntype{N}{>{\scriptsize}l}
+\newcolumntype{v}[1]{>{\raggedright\hspace{0pt}}p{#1}}
+\newcolumntype{V}[1]{>{\scriptsize\raggedright\hspace{0pt}}p{#1}}
+%
+% array.sty, dcolumn.sty
+\newcolumntype{B}[1]{>{\boldmath\DC@{.}{,}{#1}}l<{\DC@end}}
+\newcolumntype{d}[1]{>{\DC@{.}{,}{#1}}l<{\DC@end}}
+\newcolumntype{i}[1]{>{\DC@{.}{,}{#1}\mathnormal\bgroup}l<{\egroup\DC@end}}
+\newcolumntype{s}[1]{>{\DC@{.}{,}{#1}\mathsf\bgroup}l<{\egroup\DC@end}}
+%
+% array.sty, rotating.sty
+\newcolumntype{R}[1]{%
+  >{\begin{turn}{90}\begin{minipage}{#1}\scriptsize\raggedright\hspace{0pt}}l%
+  <{\end{minipage}\end{turn}}%
+}
+%
+% array.sty, tabularx.sty
+\newcolumntype{x}{>{\scriptsize\raggedright\hspace{0pt}}X}
+%
+
+\journal{Neurocomputing}
+
+\usepackage{fullwidth}
+\usepackage[hidelinks,pagebackref=true,backref=false]{hyperref}
+\usepackage{caption}
+\usepackage[procnames]{listings}
+\usepackage[table]{xcolor}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage{pgfplots}
+\usepackage{soul}
+\usepackage{comment}
+\usepackage[normalem]{ulem}
+\usepackage{placeins}
+
+\definecolor{expred}{rgb}{.7 , .3 , .3}
+\definecolor{expgreen}{rgb}{.3 , .7 , .3}
+\definecolor{expblue}{rgb}{.3 , .3 , .7}
+\definecolor{expother}{rgb}{.3 , .7 , .7}
+
+
+
+\pgfplotsset{
+    discard if/.style 2 args={
+        x filter/.append code={
+            \edef\tempa{\thisrow{#1}}
+            \edef\tempb{#2}
+            \ifx\tempa\tempb
+                \def\pgfmathresult{inf}
+            \fi
+        }
+    },
+    discard if not/.style 2 args={
+        x filter/.append code={
+            \edef\tempa{\thisrow{#1}}
+            \edef\tempb{#2}
+            \ifx\tempa\tempb
+            \else
+                \def\pgfmathresult{inf}
+            \fi
+        }
+    }
+}
+\pgfplotsset{compat=1.14}
+
+
+
+
+
+
+%%%%
+%%%%
+
+\newcommand{\plotresult}[6]{
+\pgfplotsset{width=#5,height=2.1cm,compat=1.3}
+\begin{tikzpicture}
+\pgfplotsset{
+    scale only axis,
+}
+\begin{axis}[
+	align = center,
+	title = {\emph{#2} ($t=#3$, $b=#4$)},
+	%smooth,
+	axis y line*=left,
+	ymin=0, ymax=1,
+	%xlabel=Processed chunks,
+	%yticklabels = {,\oldstylenums{0}\%,\oldstylenums{20}\%,\oldstylenums{40}\%,\oldstylenums{60}\%,\oldstylenums{80}\%,\oldstylenums{100}\%},
+	%ylabel={\ul{Accuracy}, \dotuline{chunk usage}},
+	%grid,
+	legend columns=-1,
+	  legend style={
+	    draw=none,
+	    column sep=1ex,
+	  },
+	font=\scriptsize,
+	scaled x ticks=false,
+	yminorticks=false,
+	axis x line=bottom,axis y line=left,
+	%grid=both,
+    grid style={line width=.1pt, draw=gray!10},
+    major grid style={line width=.2pt,draw=gray!50},
+    minor tick num=5,
+    ymajorgrids,
+	yminorgrids,
+]
+	\addplot[color=black, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/#1_#2_bare.csv};
+	
+	%\addplot[color=expblue, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	%{results/#1_#2_bc_b#4.csv};
+	\addplot[color=expred, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none] 
+	{results/#1_#2_blalc_b#4_t#3.csv};
+\end{axis}
+\begin{axis}[
+	smooth,
+	axis y line*=right,
+	ymin=0, ymax=#6,
+	ytick={},
+	yticklabels = {},
+	scaled x ticks=false,
+	axis x line=bottom,axis y line=left,
+	font=\tiny,
+	xticklabels={},
+]
+	\addplot[expred, thick, dotted] table [x index = {0}, y index = {4}, col sep=comma, mark=none]
+	{results/#1_#2_blalc_b#4_t#3.csv};
+	
+	
+	%\addplot[expblue, thick, dotted] table [x index = {0}, y index = {4}, col sep=comma, mark=none]
+	%{results/#1_#2_bc_b#4.csv};
+\end{axis}
+\end{tikzpicture}
+}
+
+
+
+
+%%%%
+%%%%
+
+\newcommand{\plotbudget}[6]{
+\pgfplotsset{width=#5,height=2.1cm,compat=1.3}
+\begin{tikzpicture}
+\pgfplotsset{
+    scale only axis,
+}
+\begin{axis}[
+	align = center,
+	title = {\emph{#2} ($b=#4$)},
+	%smooth,
+	axis y line*=left,
+	ymin=0, ymax=1,
+	%xlabel=Processed chunks,
+	%yticklabels = {,\oldstylenums{0}\%,\oldstylenums{20}\%,\oldstylenums{40}\%,\oldstylenums{60}\%,\oldstylenums{80}\%,\oldstylenums{100}\%},
+	%ylabel={\ul{Accuracy}, \dotuline{chunk usage}},
+	%grid,
+	legend columns=-1,
+	  legend style={
+	    draw=none,
+	    column sep=1ex,
+	  },
+	font=\scriptsize,
+	scaled x ticks=false,
+	yminorticks=false,
+	axis x line=bottom,axis y line=left,
+	%grid=both,
+    grid style={line width=.1pt, draw=gray!10},
+    major grid style={line width=.2pt,draw=gray!50},
+    minor tick num=5,
+	ymajorgrids,
+	yminorgrids,
+]
+	\addplot[color=black, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/#1_#2_bare.csv};
+	
+	\addplot[color=expblue, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/#1_#2_bc_b#4.csv};
+	%\addplot[color=expred, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none] 
+	%{results/#1_#2_blalc_b#4_t#3.csv};
+\end{axis}
+\begin{axis}[
+	smooth,
+	axis y line*=right,
+	ymin=0, ymax=#6,
+	ytick={},
+	yticklabels = {},
+	scaled x ticks=false,
+	axis x line=bottom,axis y line=left,
+	font=\tiny,
+	xticklabels={},
+]
+	%\addplot[expred, thick, dotted] table [x index = {0}, y index = {4}, col sep=comma, mark=none]
+	%{results/#1_#2_blalc_b#4_t#3.csv};
+	
+	
+	\addplot[expblue, thick, dotted] table [x index = {0}, y index = {4}, col sep=comma, mark=none]
+	{results/#1_#2_bc_b#4.csv};
+\end{axis}
+\end{tikzpicture}
+}
+
+
+%%%%
+%%%%
+
+
+
+\newcommand{\plotbare}[3]{
+\pgfplotsset{width=#3,height=2.1cm,compat=1.3}
+\begin{tikzpicture}
+\pgfplotsset{
+    scale only axis,
+}
+\begin{axis}[
+	align = center,
+	title = {\emph{#2} (#1)},
+	smooth,
+	ymin=0, ymax=1,
+	xlabel=Processed chunks,
+	yticklabels = {,\oldstylenums{0}\%,\oldstylenums{20}\%,\oldstylenums{40}\%,\oldstylenums{60}\%,\oldstylenums{80}\%,\oldstylenums{100}\%},
+	legend columns=-1,
+	  legend style={
+	    draw=none,
+	    column sep=1ex,
+	  },
+	font=\scriptsize,
+	%grid=both,
+	axis x line=bottom,axis y line=left,
+	xminorticks=false,
+	%xmajorticks=false,
+	yminorticks=false,
+	%ymajorticks=false,
+	minor x tick num=1,
+	scaled x ticks=false,
+    grid style={line width=.1pt, draw=gray!10},
+    major grid style={line width=.2pt,draw=gray!50},
+    minor tick num=5,
+]
+	\addplot[color=black, thick] table [x index = {0}, y index = {1}, col sep=comma, mark=none]
+	{results/#1_#2_bare.csv};
+\end{axis}
+\end{tikzpicture}
+}

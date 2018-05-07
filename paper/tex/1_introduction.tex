@@ -1,0 +1,70 @@
+\noindent Classification is one of the most frequent decision task which aims at assigning an observed object to one of the predefined categories. There are plethora of solutions \cite{Duda:2001}, nonetheless, there are still a few issues that need to be discussed for contemporary pattern recognition systems. We have to realize that modern machine learning algorithms should build the predictive models on the basis of huge, rapidly changing databases, i.e., we have to propose efficient procedures which can produce accurate classifiers on the basis of so-called data streams. This issue is still a focus of diligent studies, because many classifiers cannot upgrade their models using recent observations, and they usually do not take into consideration that the statistical dependencies between the attributes, describing incoming objects, and their correct classification may change over time. 
+
+\subsection{Concept drift}
+
+\noindent Aforementioned phenomenon is called a \emph{concept drift} \cite{Widmer:1996} and its appearances have become a challenge for many practical tasks, such as medical diagnosis (surgery prediction) \cite{Beyene:2015}, computer systems security (\textsc{spam} filtering, \textsc{ips} design) \cite{Lane:1998,Mendez:2006}, marketing (client profiling) \cite{Black:2002}, or banking (fraud detection) \cite{Pozzolo:2015} to enumerate only a few. 
+
+There are several taxonomies of \emph{concept drift}, based on its quickness (sudden shift and smooth ones, as incremental changes) or impact on the \emph{posterior} probabilities \cite{Widmer:1996,Gama:2013} (\emph{real concept drift} or \emph{virtual concept drift}). Considering classification task, the \emph{real drift} is crucial, because, in opposite to \emph{virtual}, it can significantly change the shape of the decision boundaries.
+
+Changes may be discovered by monitoring the unlabeled data and observing novelties related to the presence of \emph{outliers} or by monitoring classification accuracy \cite{Kuncheva:2004,Gama:2013}. However, to properly detect the \emph{real concept drift} we require the labels, because detectors based on unlabeled examples do not guarantee to sense the \emph{real} drift, while the \emph{virtual} one may be detected precisely \cite{Sobolewski:2013}.
+
+\subsection{Data stream classification}
+
+\noindent Development of the methods efficiently tackling phenomenon of \emph{concept drift}, have become an important research challenge for machine learning community. Basically, we may consider the following approaches to deal with it:
+
+\begin{itemize}
+	\item \textbf{Frequently retraining a classification model, when data comes.} It is costly and practically unviable. Moreover, in the case, when a drift does not appear, rebuilding is needless, but if a model shift occurs rapidly, the time laps of a new model may be unacceptable.
+	\item \textbf{Detecting \emph{concept drift} by monitoring incoming data.} Classifier is retrained on the basis of newly collected objects if the changes of accuracy is significant \emph{enough}.
+	\item \textbf{Constant classifier updating}. It uses incremental learning methods that allow to add new training observations during a classifier exploiting or by implementing forgetting mechanisms as dataset weighting or windowing \cite{Gama:2014}.
+\end{itemize}
+
+Gama et al. \cite{Gama:2014} analyze adaptive algorithms that can react to changes in data streams. Authors enumerate two main concepts of memory and forgetting. Firstly, let's focus on the \emph{online} learners\cite{Domingos:2003}, which have to meet the following requirements:
+
+\begin{itemize}
+	\item The classifier learning algorithm has limited memory and processing time at its disposal.%, irrespective of the execution time and amount of data processed.
+    
+    \item Every incoming learning object may be processed at most once over a training and it is not memorized, because of aforementioned limitations.
+    
+		\item The training can be paused at any time, but the accuracy of \emph{online} trained classifier should be the same or higher than the quality of a model trained on the whole batch of data collected by then.
+\end{itemize}
+
+The \emph{online} learners are seen as naturally adaptive methods, because they continuously update the predictive model on the basis of incoming observations and they behave pretty well especially for slow changing data streams. There are several propositions of such algorithms, which should be mentioned, as \textsc{winnow} \cite{Littlestone:1988} or \textsc{vfdt} \cite{Domingos:2000}. Nevertheless, the main drawback of \emph{online} learners is slow adaptation to sudden concept drift, therefore the several works are trying to combat with this problem by control the model updating on the basis of new incoming observations \cite{Carpenter:1991}. We have also mention the works where authors propose how to explicitly react to changes in data streams as \textsc{stagger} \cite{Schlimmer:1986}, \textsc{dwm} \cite{Kolter:2003}, or \textsc{gt}\oldstylenums{2}\textsc{fc} \cite{Bouchachia:2014} to enumerate only a few.
+
+One may also mentions algorithms that incorporate the \emph{forgetting mechanism} in the form of windowing or data weighting. This approach assumes that examples come in recent time are the most significant, because they are consistent with the present context. Nevertheless, their relevance decreases in the process of time. Therefore, taking into consideration only the latest incoming objects seems to be reasonable, because it helps to collect a dataset representing the present context. We may enumerate the following strategies:
+
+\begin{itemize}
+	\item Selecting the learning examples by means of a sliding data window that cuts off older observations \cite{Widmer:1996}.
+	\item Weighting learning instances according to their relevance \cite{Krawczyk:2013cores}.
+	\item Applying bootstraping-based algorithms as \emph{boosting}, that focus on incorrect classifier objects \cite{Bifet:2009}.
+\end{itemize}
+
+One may observe that two main forgetting mechanisms are usually employed. For typical windowing \emph{abrupt forgetting} is frequently used, i.e., the outdated (old) observations are not used to update the model and they are also removed from memory, while \emph{gradual forgetting} means that no observation is discarded from memory, but the observations are associated with weights related to the period of their staying in memory \cite{Gama:2014}. This approach requires implementation of a decay function, which ensures that old observations do not impact strongly to the recent model. There are several examples of decay functions, as linear one proposed by Koychev \cite{Koychev:2000} or exponential decay function proposed by Klinkerberg \cite{Klinkenberg:2004}. Nevertheless, this approach has one significant drawbacks, because it requires that all observations have to be stored in the memory. This assumption does not fulfill the requirement that we have the limited memory at our disposal. Therefore, if the weight of a given object is less than a given threshold then the object is removed from the memory \cite{Wozniak:2013}. One has also mention the interesting researches on \emph{Reservoir Sampling}, where a representative sample are obtained for the analyzed data stream \cite{Vitter:1985}.
+
+On the other hand, the main problem of using a sliding window approach is to properly set the window size. The shorter window allows to concentrate on the emerging context, though data may not be representative for a longer lasting context. On the other hand, the bigger window may include  instances representing different contexts \cite{Kurlej:2011}. Thus, we may find the propositions where the fixed window size is used, i.e., the fixed number of recent incoming examples are stored, or the number of the memorized examples may vary over time. Usually, the windows size depends on drift detector output, i.e., if drift is detected then the window size is decreased. It is worth mentioning \textsc{flora}\oldstylenums2 \cite{Widmer:1996}, which is recognized as the first method, where adaptive windowing had been used, but its descendants as \textsc{flora}\oldstylenums3 and \textsc{flora}\oldstylenums4 should be instanced, because they are able to deal with recurring concept drift and noisy data, again several works propose to adjust the window size dynamically, as  \textsc{adwin}\oldstylenums2 \cite{Bifet:2007}, or \cite{Lazarescu:2004} where multiple window approach is discussed. 
+
+In this work, we decided to benefit from the phenomenon called \emph{catastrophic forgetting} \cite{Kirkpatrick:2017}, which is unnecessary for the multi-task learning, because neural networks exposed on the data relevant to new task have the tendency to abruptly forget the knowledge of the previously learned ones. This  forgetting occurs specifically when the network is trained sequentially on multiple tasks, because the weights in the network that are important for the previous tasks are changed to meet the new objectives \cite{Kumaran:2016}.
+
+This adverse behavior for multi-task learning is highly desirable in classifier updating for the drifted data stream, because artificial neural networks should naturally forget outdated concept by rebuilding their internal knowledge representation to properly solve incoming problem. 
+
+\subsection{Labeling}
+\noindent In this work we will mostly focus on the labeling cost. Majority of the data stream classifiers produce models on the basis of supervised learning algorithms. For some practical tasks we are able to obtain true labels with reasonable cost and time (weather prediction), but for the most of practical tasks, labeling requires human effort or access to the kind of an oracle (e.g., for medical diagnosis -- human expert should always verify the diagnosis), thus it is usually very expensive. Let us notice that labels are usually assigned by human experts and therefore they can not label all the new examples if they come too fast, e.g., for \textsc{spam} filtering -- user should confirm the decision if incoming mail is legitimate or not, i.e., the continuous access to the human expert should be granted. Additionally, sometimes the proper classification is available with a long delay (e.g., for the true label for credit approval is available ca. \oldstylenums2 years after the decision). 
+
+Therefore methods of classifier design which could produce the recognition system on the basis of a partially labeled set of examples (especially if learner could point out the interesting example to be labeled) are still very desirable goal \cite{Greiner:2002}.
+
+\v{Z}liobait\.{e} et al. \cite{Zliobaite:2014} discuss the theoretical framework for predictive model learning using active learning approach and discuss tree labeling strategies. Kurlej and Wozniak \cite{Kurlej:2012} propose the active learning approach for minimal distance classifier applied to drifted streams, where decision about labeling depends on the distance between a given example to the decision boundary. In their later works \cite{Kurlej:2011,Kurlej:2011a} they analyze selected characteristics of such an approach.   
+
+Nguyen et al. \cite{Nguyen:2013} develop an incremental algorithm \emph{\textsc{csl}-stream}, that performs clustering and classification at the same time. Mohamad \cite{Mohamad:2018} propose similar data stream classifier, which combines uncertainty and density-based querying criteria. Korycki and Krawczyk \cite{Korycki:2018} apply active learning strategy to classify data streams and combine it with self-labeling approach.
+
+The windowing is very accurate for the models which does not require learning with \emph{lazy learners} \cite{Aha:1991}, but for the classifiers based on models, the data window shift requires to rebuild the model on the basis of data in a recent window. Our work will focus on a hybrid active learning  approach which is combination of \emph{online} learning approach and sliding windows method with forgetting. Because of the fact, that implementation of the forgetting mechanism requires additional memory to remember the data in window and additional computational effort to rebuild the model when the window is shifted, we have been looking for a classification model with inbuilt forgetting mechanism. It will make our method highly suitable to real-life data stream mining with a limited budget. 
+
+
+
+\subsection{Contributions}
+\noindent In a nutshell, the contributions of this work are as follows:
+
+\begin{itemize}
+\item Proposition of the active learning strategy which makes a decision for each classification model on the basis of support function.
+\item Employing \emph{catastrophic forgetting} phenomenon as forgetting mechanism for neural network classifiers.
+\item Experimental evaluation of the proposed approach on the basis of diverse benchmark datasets and a detailed comparison with the semi-supervised and fully supervised strategies.
+\end{itemize} 
+
